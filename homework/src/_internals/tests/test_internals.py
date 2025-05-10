@@ -1,11 +1,32 @@
+# import os
+# import shutil
 import os
 import shutil
+import sys
 
-from ..count_words import count_words
-from ..preprocess_lines import preprocess_lines
-from ..read_all_lines import read_all_lines
-from ..split_into_words import split_into_words
-from ..write_word_counts import write_word_counts
+from ..._internals import *
+
+# from ..count_words import count_words
+# from ..parse_args import parse_args
+# from ..preprocess_lines import preprocess_lines
+# from ..read_all_lines import read_all_lines
+# from ..split_into_words import split_into_words
+# from ..write_word_counts import write_word_counts
+
+
+def test_parse_args():
+
+    # Llamada en el prompt:
+    #
+    #   $ python3 -m homework data/input/ data/output/
+    #
+    test_args = ["homework", "data/input/", "data/output/"]
+    sys.argv = test_args
+
+    input_folder, output_folder = parse_args()
+
+    assert input_folder == test_args[1]
+    assert output_folder == test_args[2]
 
 
 def test_read_all_lines():
@@ -44,7 +65,7 @@ def test_write_word_counts():
     if os.path.exists(output_folder):
         shutil.rmtree(output_folder)
 
-    write_word_counts(output_folder, word_counts)
+    write_word_counts(word_counts, output_folder)
 
     output_file = os.path.join(output_folder, "wordcount.tsv")
     assert os.path.exists(output_file), "Output file was not created"
